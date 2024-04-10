@@ -4,6 +4,8 @@ import com.game.fuzzyGames.model.GameData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
@@ -118,6 +120,15 @@ public class SolverService {
         }
         result.deleteCharAt(result.length() - 1);
         result.append("}.");
+
+        // After building the result string, write it to a file
+        try (FileWriter writer = new FileWriter("src/main/resources/data/gameResult.txt")) {
+            // Replacing '<br>' with newline for plain text formatting
+            String resultText = result.toString().replace("<br>", "\n");
+            writer.write(resultText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return result.toString();
     }
